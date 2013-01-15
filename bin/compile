@@ -24,6 +24,7 @@ CACHE_DIR=$2
 WGET_BUILD="$(mktmpdir wget)"
 DEBOOTSTRAP_BUILD="$(mktmpdir debootstrap)"
 FAKECHROOT_BUILD="$(mktmpdir fakechroot)"
+DEFAULT_DEB_PACKAGES="aptitude build-essential perl git '^libxcb.*' libx11-xcb-dev libglu1-mesa-dev libxrender-dev flex bison gperf libicu-dev libxslt-dev ruby"
 
 mkdir -p $BUILD_DIR/.tools/fakechroot
 mkdir -p $CACHE_DIR/.tools/{wget,debootstrap}
@@ -78,13 +79,14 @@ deb http://archive.ubuntu.com/ubuntu lucid-security main
 deb http://archive.ubuntu.com/ubuntu lucid-updates main
 EOF"
 fakechroot fakeroot chroot $BUILD_DIR/.root apt-get update
+fakechroot fakeroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES
 echo "packages updated" | indent
 
 cd $BUILD_DIR/.root
 ln -s ../ app
-
 mkdir -p $BUILD_DIR/bin
 cp $BUILDPACK_DIR/bin/fakesu $BUILD_DIR/bin
-cp $BUILDPACK_DIR/bin/aws $BUILD_DIR/bin
+cp $BUILDPACK_DIR/bin/sudo $BUILD_DIR/bin
+
 
 exit 0

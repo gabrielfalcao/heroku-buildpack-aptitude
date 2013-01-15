@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-echo "fakesu"
+echo "aptitude"
 exit 0
-
