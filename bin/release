@@ -6,5 +6,5 @@ cat <<EOF
 config_vars:
   PATH: /usr/local/bin:/usr/bin:/bin:/app/bin
 default_process_types:
-  shell: bin/fakesu
+  console: bin/fakesu
 EOF

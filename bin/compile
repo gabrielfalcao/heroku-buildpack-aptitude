@@ -24,7 +24,7 @@ CACHE_DIR=$2
 WGET_BUILD="$(mktmpdir wget)"
 DEBOOTSTRAP_BUILD="$(mktmpdir debootstrap)"
 FAKECHROOT_BUILD="$(mktmpdir fakechroot)"
-DEFAULT_DEB_PACKAGES="aptitude build-essential perl git-core libx11-xcb-dev libglu1-mesa-dev libxrender-dev flex bison gperf libicu-dev libxslt-dev ruby"
+DEFAULT_DEB_PACKAGES="aptitude git-core"
 
 mkdir -p $BUILD_DIR/.tools/fakechroot
 mkdir -p $CACHE_DIR/.tools/{wget,debootstrap}
