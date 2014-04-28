@@ -17,6 +17,21 @@ function indent() {
   esac
 }
 
+export_env_dir() {
+    env_dir=$1
+    whitelist_regex=${2:-''}
+    blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+    if [ -d "$env_dir" ]; then
+        for e in $(ls $env_dir); do
+            echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+                export "$e=$(cat $env_dir/$e)"
+            :
+        done
+    fi
+}
+
+export_env_dir $3
+
 BUILDPACK_DIR=`cd $(dirname $0); cd ..; pwd`
 BUILD_DIR=$1
 CACHE_DIR=$2
@@ -79,7 +94,7 @@ deb http://archive.ubuntu.com/ubuntu lucid-security main
 deb http://archive.ubuntu.com/ubuntu lucid-updates main
 EOF"
 fakechroot fakeroot chroot $BUILD_DIR/.root apt-get update
-fakechroot fakeroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES
+fakechroot fakeroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES $USER_DEV_PACKAGES
 echo "packages updated" | indent
 
 cd $BUILD_DIR/.root
@@ -88,5 +103,6 @@ mkdir -p $BUILD_DIR/bin
 cp $BUILDPACK_DIR/bin/fakesu $BUILD_DIR/bin
 cp $BUILDPACK_DIR/bin/sudo $BUILD_DIR/bin
 
+export CPATH=$BUILD/.root/usr/include:$USER_CPATH
 
 exit 0
