@@ -94,7 +94,7 @@ deb http://archive.ubuntu.com/ubuntu lucid-security main
 deb http://archive.ubuntu.com/ubuntu lucid-updates main
 EOF"
 fakechroot fakeroot chroot $BUILD_DIR/.root apt-get update
-fakechroot fakeroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES $USER_DEV_PACKAGES
+fakechroot fakeroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES $USER_DEB_PACKAGES
 echo "packages updated" | indent
 
 cd $BUILD_DIR/.root
